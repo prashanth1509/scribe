@@ -50,30 +50,31 @@ class PersistentStore extends Store {
 	 * @private
 	 */
 	_createPatch() {
-		let patchList = [];
 
-		// create patch only when first disk read is ok
 		this.ready().then((lastPersistentImmutableState) => {
+
+			let patchList = [];
+
 			Object.keys(this._pendingPatches).forEach((attr) => {
 				patchList.push(
 					Utils.findDiffs(attr, lastPersistentImmutableState)
 				);
 			});
-		});
 
-		// generate optimized patch list
-		patchList = Utils.optimizePatches(patchList);
+			// generate optimized patch list
+			patchList = Utils.optimizePatches(patchList);
 
-		// start writing meta data
-		let META_KEY = getMetaKey(this.constructor.name);
-		let metaData = {
-			patchList: patchList,
-			lastUpdate: Date.now(),
-			ttl: this._options.ttlMs
-		};
+			// start writing meta data
+			let META_KEY = getMetaKey(this.constructor.name);
+			let metaData = {
+				patchList: patchList,
+				lastUpdate: Date.now(),
+				ttl: this._options.ttlMs
+			};
+			Utils.writeData(META_KEY, metaData).then(() => {
+				this._pendingPatches = Object.create(null);
+			});
 
-		Utils.writeData(META_KEY, metaData).then(() => {
-			this._pendingPatches = Object.create(null);
 		});
 
 	}
