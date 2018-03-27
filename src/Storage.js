@@ -4,7 +4,7 @@ const CACHE_KEY = '_scribe_';
 const TTL = 2000;
 const getDataKey = (key) => CACHE_KEY + '_data_' + key;
 const getMetaKey = (key) => CACHE_KEY + '_meta_' + key;
-const getRootKeyFromMetaKey = (metaKey) => metaKey.replace(CACHE_KEY + '_meta_', '');
+const getRootKeyFromMetaKey = (metaKey) => metaKey.replace(getMetaKey(''), '');
 
 class StoreState {
 	constructor(state = Object.create(null)) {
@@ -121,7 +121,7 @@ class Storage {
 	}
 
 	/**
-	 * Schdules next write and returns
+	 * Schedules next write and returns
 	 * @param key
 	 * @param nextState
 	 * @param nextProps
@@ -137,6 +137,10 @@ class Storage {
 		this._processor();
 	}
 
+	/**
+	 * Core diffing and batching
+	 * @private
+	 */
 	_processor() {
 
 		if(!this._queue || this._queue.length < 1) {
@@ -158,7 +162,7 @@ class Storage {
 		if(pendingChanges.length) {
 
 			pendingChanges.forEach((prop) => {
-				// todo optimize
+				// todo optimize + multithread
 				patches.push(Utils.findDiffs(currentStoreObject.getState()[prop], currentStoreObject.getFirstState()[prop]));
 			});
 
@@ -189,7 +193,7 @@ class Storage {
 			return;
 
 		Utils.iterateKeys((data, key) => {
-			if(key.indexOf(getDataKey('')) > -1 && this.shouldPurge(data, key) === true) {
+			if(key.indexOf(getMetaKey('')) > -1 && this.shouldPurge(data, key) === true) {
 				this.purge(key);
 			}
 		}).then(() => {
