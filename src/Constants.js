@@ -12,5 +12,6 @@ export default {
 		return metaKey.replace(this.getMetaKey(''), '');
 	},
 	BASE_KEY,
-	DEFAULT_TTL: 2000
+	DEFAULT_TTL: 2000,
+	GC_START_TIME: 2000
 };

@@ -1,12 +1,12 @@
 import Utils from './Utils';
-import {getRootKeyFromMetaKey, getDataKey, getMetaKey} from './Constants';
+import {getRootKeyFromMetaKey, getDataKey, getMetaKey, GC_START_TIME} from './Constants';
 
 class GarbageCollector {
 
 	constructor() {
 		this._completed = false;
 		this._purgables = {};
-		this._gcProcess = Utils.getLeastPriortizedFunction(this._gcProcess, 2000);
+		this._gcProcess = Utils.getLeastPriortizedFunction(this._gcProcess, GC_START_TIME);
 	}
 
 	/**
