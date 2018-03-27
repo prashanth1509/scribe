@@ -1,4 +1,3 @@
-import {getMetaKey, DEFAULT_TTL} from './Constants';
 import localforage from 'localforage';
 
 export default {
@@ -98,22 +97,23 @@ export default {
 	/**
 	 * Returns all valid scribe prefixed keys
 	 */
-	iterateMetaKeys(callback) {
-		return localforage.iterate(function(value, key, iterationNumber) {
-			if(key.indexOf(getMetaKey('')) > -1) {
-				callback(value, key);
-			}
+	iterateKeys(callback) {
+		return localforage.iterate(function(value, key) {
+			callback(value, key);
 		});
 	},
 
 	/**
-	 * Returns if data is stale
-	 * @param lastUpdate
-	 * @param ttl
-	 * @returns {boolean}
+	 * Memoize a function
+	 * @param fn
 	 */
-	isDataStale(lastUpdate, ttl = DEFAULT_TTL) {
-		return (Date.now() - parseInt(lastUpdate)) > parseInt(ttl);
+	memoize(fn) {
+		this._fnCache = Object.create(null);
+		return function (key, ...args) {
+			if(this._fnCache[key] === undefined)
+				this._fnCache[key] = fn.apply(null, [key, args]);
+			return this._fnCache[key];
+		}
 	}
 
 }

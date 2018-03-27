@@ -1,2 +1,7 @@
 import Store from './Store';
-export default Store;
+import PersistentStore from './PersistentStore';
+
+export default {
+	Store,
+	PersistentStore
+};
