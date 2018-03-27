@@ -1,0 +1,22 @@
+{
+  "name": "scribe",
+  "version": "0.0.1",
+  "description": "High speed persistent stores",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prashanth1509/scribe.git"
+  },
+  "author": "prashanth.a",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prashanth1509/scribe/issues"
+  },
+  "homepage": "https://github.com/prashanth1509/scribe#readme",
+  "dependencies": {
+    "localforage": "^1.6.0"
+  }
+}
