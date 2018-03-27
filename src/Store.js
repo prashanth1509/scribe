@@ -1,6 +1,6 @@
-import Emitter from './Emitter';
+import Observer from './Observer';
 
-export default class Store extends Emitter {
+export default class Store extends Observer {
 
 	constructor(initialState = Object.create(null)) {
 		this.state = initialState;

@@ -1,4 +1,4 @@
-class Emitter {
+export default class Observer {
 
 	constructor(options = {}) {
 		this.data = Object.create(null);
